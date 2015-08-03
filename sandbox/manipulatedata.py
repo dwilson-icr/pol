@@ -1,22 +1,12 @@
 # a is a list of location dictionaries
 a = [
 {
-    "timestampMs" : "1399222947211",
-    "latitudeE7" : 396124028,
-    "longitudeE7" : -1047693543,
-    "accuracy" : 70
-  }, {
-    "timestampMs" : "1399222879731",
-    "latitudeE7" : 396124046,
-    "longitudeE7" : -1047693466,
-    "accuracy" : 69
-  }, {
-    "timestampMs" : "1399222811733",
-    "latitudeE7" : 396124169,
-    "longitudeE7" : -1047693292,
-    "accuracy" : 69
+    "timestampMs" : ,
+    "latitudeE7" : ,
+    "longitudeE7" : ,
+    "accuracy" : 
   }
-]
+ ]
 
 from datetime import datetime
 import geocoder
