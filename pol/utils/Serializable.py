@@ -64,6 +64,24 @@ class Serializable(object):
 
     @openfp('r')
     def Import_pickle(self,fp):
-        self = pickle.load(fp)
-        print self.uuid
+        self_obj = pickle.load(fp)
+
+        for k,v in self_obj.__dict__.items():
+            self.__setattr__(k,v) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
