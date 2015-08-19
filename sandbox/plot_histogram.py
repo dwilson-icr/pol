@@ -31,6 +31,6 @@ plt.figure()
 #maps = smopy.Map((lat0,lon0,lat1,lon1),z=10)
 #ax = maps.show_mpl()
 #ax.plot(locs[:,0],locs[:,1],'g-')
-plt.hexbin(locs[:,0],locs[:,1],bins='log',gridsize=5000,marginals=True,mincnt=25,cmap=plt.cm.jet)
+plt.hexbin(locs[:,0],locs[:,1],bins='log',gridsize=5000,marginals=True,mincnt=1,cmap=plt.cm.jet)
 plt.show()
 

@@ -9,20 +9,20 @@ def bilinear_interpolation(x,y,x0,x1,y0,y1,f00,f01,f10,f11):
     xt = 0.0
     yt = 0.0
 
-    if (x1 - x0) > 0:
+    if abs(x1 - x0) > 0:
         xt = (x - x0) / (x1 - x0)
-    if (y1 - y0) > 0:
+    if abs(y1 - y0) > 0:
         yt = (y - y0) / (y1 - y0)
 
     if xt == 0.0 and yt == 0.0:
         return f00
-
+    
     a00 = f00
     a10 = f10 - f00
     a01 = f01 - f00
     a11 = f11 + f00 - (f01 + f10)
 
-    return a00 + a10*x + a01*y + a11*x*y
+    return a00 + a10*xt + a01*yt + a11*xt*yt
 
 class TemporalVectorField(POLComponent):
     def __init__(self,U,V,x,y,times,*args,**kwargs):
@@ -70,10 +70,12 @@ class TemporalVectorField(POLComponent):
         v01 = p*self.V[t1_idx,y1_idx,x0_idx] + (1.0 - p)*self.V[t0_idx,y1_idx,x0_idx]
         v10 = p*self.V[t1_idx,y0_idx,x1_idx] + (1.0 - p)*self.V[t0_idx,y0_idx,x1_idx]
         v11 = p*self.V[t1_idx,y1_idx,x1_idx] + (1.0 - p)*self.V[t0_idx,y1_idx,x1_idx]
-     
+        #print u00,u10,u01,u11,v00,v10,v01,v11
+        #print x0,x1,y0,y1,x,y
         u = bilinear_interpolation(x,y,x0,x1,y0,y1,u00,u01,u10,u11)
         v = bilinear_interpolation(x,y,x0,x1,y0,y1,v00,v01,v10,v11)
-        
+        #print u,v
+        #print t0,t1
         return u,v
 
 
