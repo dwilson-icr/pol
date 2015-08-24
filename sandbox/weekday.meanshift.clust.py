@@ -313,7 +313,7 @@ def weekhour(lst,day,hour):
 
     num_samples = len(labels)
     list_clust_cents = cluster_centers.tolist()
-    num_labels = Counter(labels).most_common
+    num_labels = Counter(labels).most_common(1)
     top = tuple(num_labels)
     densest = top[0][1]
 
