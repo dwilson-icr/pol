@@ -42,8 +42,7 @@ for dicts in a:
     # update dictionaries
 
     dicts.update({"dayofweek" : w, "month" : m, "day" : d, "year" : y, "hour" : h,\
-			"minute" : min, "second" : sec, "latlong" : latlong,\
-			 "latlonground" : latlonground})
+			"minute" : min, "second" : sec, "latlong" : latlong})
 
 
 # extracts Monday’s from total list of location data
@@ -314,9 +313,9 @@ def weekhour(lst,day,hour):
 
     num_samples = len(labels)
     list_clust_cents = cluster_centers.tolist()
-    num_labels = Counter(labels).most_common(3)
-    top_two = tuple(num_labels)
-    densest = top_two[0][1]
+    num_labels = Counter(labels).most_common
+    top = tuple(num_labels)
+    densest = top[0][1]
 
     # get address of cluster center that contains the most points
 
