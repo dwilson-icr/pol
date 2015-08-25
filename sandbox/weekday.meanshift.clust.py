@@ -1,4 +1,5 @@
 # encoding=utf8
+import json
 import numpy as np
 import matplotlib.pyplot as plt
 import csv
@@ -7,47 +8,54 @@ from itertools import cycle
 from collections import Counter
 from datetime import datetime
 
-# a is a list of location dictionaries
-a = [ ]
+data_path = '/Users/carlz/Documents/PythonExamples/pgmtests/dow.time/daybyhour/LocationHistory.json'
 
 
+with open(data_path,'r') as fp:
+    data = json.load(fp)
 
-for dicts in a:
-
-    for attributes in dicts:
-
-        # changes timestampMs into a usable format
-
-        time_params = float(dicts.get("timestampMs"))
-        time_params *= .001
+    locations = data['locations']
 
 
-        # datetime.fromtimestamp gives date and time data from a timestamp
+    for dicts in locations:
 
-        dtime = datetime.fromtimestamp(time_params)
-        w = datetime.weekday(dtime)
-        m = dtime.month
-        d = dtime.day
-        y = dtime.year
-        h = dtime.hour
-        min = dtime.minute
-        sec = dtime.second
+        for attributes in dicts:
+
+            # changes timestampMs into a usable format
+
+            time_params = float(dicts.get("timestampMs"))
+            time_params *= .001
 
 
-        # creates a pair of lat-long coordinates
+            # datetime.fromtimestamp gives date and time data from a timestamp
 
-        latlong = (float(dicts["latitudeE7"])*1e-7,float(dicts["longitudeE7"])*1e-7)
+            dtime = datetime.fromtimestamp(time_params)
+            w = datetime.weekday(dtime)
+            m = dtime.month
+            d = dtime.day
+            y = dtime.year
+            h = dtime.hour
+            min = dtime.minute
+            sec = dtime.second
 
 
-    # update dictionaries
+            # creates a pair of lat-long coordinates
 
-    dicts.update({"dayofweek" : w, "month" : m, "day" : d, "year" : y, "hour" : h,\
+            latlong = (float(dicts["latitudeE7"])*1e-7,\
+                        float(dicts["longitudeE7"])*1e-7)
+
+
+        # update dictionaries
+
+        dicts.update({"dayofweek" : w, "month" : m, "day" : d, "year" : y, "hour" : h,\
 			"minute" : min, "second" : sec, "latlong" : latlong})
+
+
 
 
 # extracts Monday’s from total list of location data
 
-mon = [d for d in a if d['dayofweek'] == 0]
+mon = [d for d in locations if d['dayofweek'] == 0]
 
 # extracts hourly locations from Monday’s list
 
@@ -79,7 +87,7 @@ mon23 = [t for t in mon if t['hour'] == 23]
 
 # extracts Tuesdays’s from total list of location data
 
-tues = [d for d in a if d['dayofweek'] == 1]
+tues = [d for d in locations if d['dayofweek'] == 1]
 
 # extracts hourly locations from Tuesday’s list
 
@@ -111,7 +119,7 @@ tues23 = [t for t in tues if t['hour'] == 23]
 
 # extracts Wednesday’s from total list of location data
 
-wed = [d for d in a if d['dayofweek'] == 2]
+wed = [d for d in locations if d['dayofweek'] == 2]
 
 # extracts hourly locations from Wednesday’s list
 
@@ -143,7 +151,7 @@ wed23 = [t for t in wed if t['hour'] == 23]
 
 # extracts Thursdays’s from total list of location data
 
-thurs = [d for d in a if d['dayofweek'] == 3]
+thurs = [d for d in locations if d['dayofweek'] == 3]
 
 # extracts hourly locations from Thursday’s list
 
@@ -175,7 +183,7 @@ thurs23 = [t for t in thurs if t['hour'] == 23]
 
 # extracts Friday’s from total list of location data
 
-fri = [d for d in a if d['dayofweek'] == 4]
+fri = [d for d in locations if d['dayofweek'] == 4]
 
 # extracts hourly locations from Friday’s list
 
@@ -207,7 +215,7 @@ fri23 = [t for t in fri if t['hour'] == 23]
 
 # extracts Saturday’s from total list of location data
 
-sat = [d for d in a if d['dayofweek'] == 5]
+sat = [d for d in locations if d['dayofweek'] == 5]
 
 # extracts hourly locations from Saturday’s list
 
@@ -239,7 +247,7 @@ sat23 = [t for t in sat if t['hour'] == 23]
 
 # extracts Sunday’s from total list of location data
 
-sun = [d for d in a if d['dayofweek'] == 6]
+sun = [d for d in locations if d['dayofweek'] == 6]
 
 # extracts hourly locations from Sunday’s list
 
@@ -300,8 +308,6 @@ def weekhour(lst,day,hour):
 
     # for plotting:
 
-    plt.figure()
-    plt.clf()
 
     colors = cycle('bgrcmykbgrcmykbgrcmykbgrcmyk')
     for k, col in zip(range(n_clusters_), colors):
@@ -325,7 +331,7 @@ def weekhour(lst,day,hour):
 
     # creates a cvs file
 
-    with open('weekdaythirdcluster.csv', 'a') as csvfile:
+    with open('weekdayclusters.csv', 'a') as csvfile:
         fieldnames = ['day', 'hour', 'densest_cluster', 'number_of_samples',
     'number_of_estimated_clusters', 'address', 'coordinate']
         mondaywriter = csv.DictWriter(csvfile, fieldnames=fieldnames)
